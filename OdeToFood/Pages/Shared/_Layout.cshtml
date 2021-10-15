@@ -38,14 +38,19 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+            <hr />
+            
         </main>
     </div>
+    <div class="container">
+        <footer>
+            
+                @RenderSection("footer", required: false)
+                <p>&copy; 2021 - OdeToFood</p>
+            
+        </footer>
+    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - OdeToFood - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OdeToFood.Core;
 using OdeToFood.data;
+using OdeToFood.Data;
 
 namespace OdeToFood.Pages.Restaurants
 {
@@ -14,14 +15,18 @@ namespace OdeToFood.Pages.Restaurants
     {
         private readonly IRestaurantData restaurantData;
         private readonly IHtmlHelper htmlHelper;
+
         [BindProperty]
-        public Restaurant Restaurant { get; set;  }
-        public IEnumerable<SelectListItem> Cuisines { get; set;  }
-        public EditModel(IRestaurantData restaurantData, IHtmlHelper htmlHelper )
+        public Restaurant Restaurant { get; set; }
+        public IEnumerable<SelectListItem> Cuisines { get; set; }
+
+        public EditModel(IRestaurantData restaurantData,
+                         IHtmlHelper htmlHelper)
         {
             this.restaurantData = restaurantData;
             this.htmlHelper = htmlHelper;
         }
+
         public IActionResult OnGet(int? restaurantId)
         {
             Cuisines = htmlHelper.GetEnumSelectList<CuisineType>();
@@ -33,22 +38,22 @@ namespace OdeToFood.Pages.Restaurants
             {
                 Restaurant = new Restaurant();
             }
-            if(Restaurant == null)
+            if (Restaurant == null)
             {
                 return RedirectToPage("./NotFound");
             }
             return Page();
         }
-        public IActionResult onPost()
+
+        public IActionResult OnPost()
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 Cuisines = htmlHelper.GetEnumSelectList<CuisineType>();
                 return Page();
-
-       
             }
-            if(Restaurant.Id >0)
+
+            if (Restaurant.Id > 0)
             {
                 restaurantData.Update(Restaurant);
             }
@@ -57,9 +62,8 @@ namespace OdeToFood.Pages.Restaurants
                 restaurantData.Add(Restaurant);
             }
             restaurantData.Commit();
-            TempData["Message"] = "Restaurant saved!"
+            TempData["Message"] = "Restaurant saved!";
             return RedirectToPage("./Detail", new { restaurantId = Restaurant.Id });
-
         }
     }
 }
