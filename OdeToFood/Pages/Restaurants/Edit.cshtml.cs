@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using OdeToFood.Core;
 using OdeToFood.data;
 using OdeToFood.Data;
@@ -13,6 +14,13 @@ namespace OdeToFood.Pages.Restaurants
 {
     public class EditModel : PageModel
     {
+        private readonly OdeToFood.Data.OdeToFoodDBContext _context;
+
+        public EditModel(OdeToFoodDBContext context)
+        {
+            _context = context;
+        }
+
         private readonly IRestaurantData restaurantData;
         private readonly IHtmlHelper htmlHelper;
 
@@ -64,6 +72,10 @@ namespace OdeToFood.Pages.Restaurants
             restaurantData.Commit();
             TempData["Message"] = "Restaurant saved!";
             return RedirectToPage("./Detail", new { restaurantId = Restaurant.Id });
+        }
+        private bool RestaurantExists(int id)
+        {
+            return _context.Restaurants.Any(e => e.Id == id);
         }
     }
 }
